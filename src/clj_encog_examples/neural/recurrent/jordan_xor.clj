@@ -1,29 +1,28 @@
-(ns clj-encog-examples.neural.recurrent.elman-xor
+(ns clj-encog-examples.neural.recurrent.jordan-xor
   (:require [clj-encog-examples.neural.xor.common :as c]
             [clj-encog-examples.neural.recurrent.common :as rc]
             [clj-encog-examples.neural.xor.temporal :as t])
-  (:import [org.encog.neural.pattern ElmanPattern]
+  (:import [org.encog.neural.pattern JordanPattern]
            [org.encog.engine.network.activation ActivationSigmoid]
            [org.encog.neural.networks BasicNetwork]))
 
-(defn create-elman-network []
+(defn create-jordan-network []
   (doto (cast BasicNetwork
               (.generate
-               (doto (ElmanPattern.)
+               (doto (JordanPattern.)
                  (.setActivationFunction (ActivationSigmoid.))
                  (.setInputNeurons 1)
-                 (.addHiddenLayer 6)
+                 (.addHiddenLayer 2)
                  (.setOutputNeurons 1))))
     (.reset)))
 
 (defn main []
   (let [training-set (t/generate 120)
-        elman-ntwrk (create-elman-network)
-        basic-ntwrk (rc/create-feedforward-network 6)]
-    (println "Best error rate with Elman Network: "
-             (rc/train-network "Elman" elman-ntwrk training-set))
+        jordan-ntwrk (create-jordan-network)
+        basic-ntwrk (rc/create-feedforward-network 2)]
+    (println "Best error rate with Jordan Network: "
+             (rc/train-network "Jordan" jordan-ntwrk training-set))
     (println "Best error rate with Feedforward Network: "
              (rc/train-network "FeedForward" basic-ntwrk training-set))
-    (println "Elman should be able to get into the 10% range,\nfeedforward should not go below 25%.\nThe recurrent Elment net can learn better in this case.")
-    (println "If your results are not as good, try rerunning, or perhaps training longer."))
+    (println "Jordan will perform only marginally better than feedforward.\nThe more output neurons, the better performance a Jordan will give."))
   (c/shutdown))
