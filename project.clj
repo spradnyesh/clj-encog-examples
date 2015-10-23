@@ -1,4 +1,4 @@
-(defproject clj-encog-examples "0.2.4"
+(defproject clj-encog-examples "0.2.5"
   :description "encog-examples rewritten in clojure"
   :url "https://github.com/spradnyesh/clj-encog-examples"
   :license {:name "Eclipse Public License"
